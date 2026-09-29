@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#7448e8">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Kids Planet • App</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(145deg,#fff5df,#effff5 50%,#f1edff);color:#17221c;font-family:Arial,sans-serif}
+header{background:linear-gradient(135deg,#ff7a45,#ff4f81 48%,#7448e8);color:white;padding:21px 17px 19px;position:sticky;top:0;z-index:4;box-shadow:0 8px 24px #7448e844}
+.brand{font-size:27px;font-weight:900}
+.sub{font-size:13px;opacity:.94;margin-top:4px}
+nav{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:10px;background:#fffffff2;border-bottom:1px solid #e8e2ed;position:sticky;top:80px;z-index:3}
+nav button{border:0;border-radius:15px;padding:11px 3px;background:#eeeaf7;color:#594b72;font-weight:900;font-size:11px;box-shadow:0 4px 10px #49366b18}
+nav button.active{background:linear-gradient(135deg,#7448e8,#ff4f81);color:white;box-shadow:0 6px 16px #7448e855}
+main{max-width:820px;margin:auto;padding:16px}
+.hello{margin-bottom:15px}
+.hello h2{margin:0 0 4px;font-size:25px}
+.hello p{margin:0;color:#68736d;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-bottom:14px}
+.stat{background:white;border:1px solid #ebe6ef;border-radius:20px;padding:16px;box-shadow:0 8px 22px #593b7814;position:relative;overflow:hidden}
+.stat:after{content:"";position:absolute;right:-18px;top:-24px;width:72px;height:72px;border-radius:50%;background:#ffcb4a44}
+.stat .n{font-size:29px;font-weight:900}
+.stat small{color:#707a74;font-weight:700}
+.quick{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:15px}
+.quick button{border:0;border-radius:18px;padding:15px;text-align:left;font-weight:900;color:#30283f;min-height:70px;box-shadow:0 8px 18px #50366e18}
+.quick button:nth-child(1){background:linear-gradient(135deg,#ffd98a,#fff1cf);border:1px solid #ffc85b}
+.quick button:nth-child(2){background:linear-gradient(135deg,#9ee8ff,#eafaff);border:1px solid #70d8f7}
+.quick button:nth-child(3){background:linear-gradient(135deg,#aaf0b7,#effff1);border:1px solid #78df8a}
+.quick button:nth-child(4){background:linear-gradient(135deg,#d3b5ff,#f6efff);border:1px solid #b995f4}
+.card{background:white;border:1px solid #ebe6ef;border-radius:21px;padding:17px;margin-bottom:13px;box-shadow:0 8px 24px #593b7810}
+.section-title{font-size:18px;font-weight:900;margin-bottom:4px}
+.title{font-weight:900;font-size:16px}
+.muted{color:#68736d;font-size:13px;line-height:1.55}
+.row{display:flex;justify-content:space-between;gap:12px}
+.badge{display:inline-block;padding:7px 10px;border-radius:99px;background:#fff0b8;color:#805c00;font-size:11px;font-weight:900;white-space:nowrap}
+.ok{background:#d7f8df;color:#16733b}
+.red{background:#ffe0e8;color:#a11f42}
+.action{border:0;border-radius:13px;padding:11px 14px;margin:7px 6px 0 0;font-weight:900;box-shadow:0 4px 10px #3b315012}
+.dark{background:linear-gradient(135deg,#7448e8,#9b5cff);color:white}
+.light{background:linear-gradient(135deg,#eaf4ff,#f6efff);color:#4d3d70;border:1px solid #d9cff0}
+.danger{background:linear-gradient(135deg,#ffe6ed,#fff1f4);color:#a11f42;border:1px solid #ffc3d2}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:12px}
+.day{background:white;border:1px solid #e8e3ea;border-radius:11px;padding:9px 3px;text-align:center;min-height:54px;font-size:12px}
+.day b{display:block}
+.busy{border:2px solid #ff7a45;background:linear-gradient(135deg,#fff1e5,#fff)}
+.dot{font-size:10px;margin-top:5px;color:#66746c;font-weight:800}
+.empty{text-align:center;color:#66756b;padding:35px 10px}
+.notice{position:fixed;left:12px;right:12px;bottom:13px;background:linear-gradient(135deg,#7448e8,#ff4f81);color:white;padding:17px;border-radius:20px;box-shadow:0 12px 35px #7048e866;display:none;z-index:8}
+.notice button{border:0;border-radius:12px;padding:9px 12px;margin-top:9px;font-weight:900;color:#4d3d70}
+.today{outline:3px solid #ff9f43;transform:scale(1.03)}
+.empty-day{visibility:hidden}
+.login{max-width:420px;margin:60px auto;padding:20px}
+.login input{width:100%;padding:14px;border:1px solid #ddd;border-radius:13px;margin:7px 0}
+.login button{width:100%;padding:14px;border:0;border-radius:13px;background:linear-gradient(135deg,#7448e8,#ff4f81);color:white;font-weight:900;margin-top:8px}
+.small{font-size:12px;color:#68736d}
+.chart{display:flex;align-items:flex-end;gap:7px;height:220px;padding:18px 8px 0;overflow-x:auto}
+.barbox{min-width:45px;height:190px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px}
+.bar{width:28px;min-height:4px;border-radius:9px 9px 4px 4px;background:linear-gradient(180deg,#7448e8,#ff4f81);box-shadow:0 5px 12px #7448e833}
+.bar.current{background:linear-gradient(180deg,#ff7a45,#ff4f81)}
+.barvalue{font-size:9px;color:#68736d;font-weight:800;white-space:nowrap}
+.barlabel{font-size:10px;font-weight:900;color:#594b72}
+.revenue-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+.revenue-main{font-size:28px;font-weight:900;margin-top:4px}
+.trend{font-size:12px;font-weight:900;color:#16733b}
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;font-size:11px;font-weight:800;color:#68736d}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="brand">🌱 Kids Planet</div>
+<div class="sub">Painel de administração</div>
+
+<button id="installBtn"
+style="display:none;margin-top:10px;border:0;border-radius:12px;padding:10px 14px;font-weight:900;color:#4d3d70;background:#fff;box-shadow:0 4px 12px #0002">
+📲 Instalar na tela inicial
+</button>
+</header>
+
+<nav id="nav" style="display:none">
+<button class="active" onclick="page('home',this)">🏠 Início</button>
+<button onclick="page('requests',this)">📋 Agendamentos</button>
+<button onclick="page('agenda',this)">📅 Agenda</button>
+<button onclick="page('payments',this)">💳 Pagamentos</button>
+<button onclick="page('revenue',this)">📈 Faturamento</button>
+</nav>
+
+<main id="app"></main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const app=document.getElementById('app');
+
+if(!window.supabase){
+
+app.innerHTML=`
+<div class="login">
+<div class="card">
+<div class="title">⚠️ Erro ao carregar o sistema</div>
+<p class="muted">
+O painel abriu, mas o serviço de conexão não carregou.
+Recarregue esta página e tente novamente.
+</p>
+<button onclick="location.reload()">🔄 Recarregar</button>
+</div>
+</div>`;
+
+throw new Error("Supabase não carregou");
+
+}
+
+const SUPABASE_URL='https://encydksbesxporsmmott.supabase.co';
+
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_CpwWhxFfSQBcGM6eiSeAww_LlmLa0eB';
+
+const supabaseClient=
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_PUBLISHABLE_KEY
+);
+
+let requests=[];
+let channel=null;
+
+
+function esc(v){
+
+return String(v??'').replace(
+/[&<>"']/g,
+m=>({
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#39;'
+}[m])
+);
+
+}
+
+
+function login(){
+
+app.innerHTML=`
+
+<div class="login">
+
+<div class="card">
+
+<div class="title">🔐 Entrar no painel</div>
+
+<p class="small">
+Use o e-mail e a senha do administrador criados no Supabase.
+</p>
+
+<input id="email" type="email" placeholder="Seu e-mail">
+
+<input id="password" type="password" placeholder="Sua senha">
+
+<button onclick="doLogin()">Entrar</button>
+
+<p id="loginMsg" class="small"></p>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+async function doLogin(){
+
+const msg=document.getElementById('loginMsg');
+
+const emailInput=document.getElementById('email');
+const passwordInput=document.getElementById('password');
+
+msg.textContent='Entrando...';
+
+const {error}=await supabaseClient.auth.signInWithPassword({
+
+email:emailInput.value.trim(),
+
+password:passwordInput.value
+
+});
+
+if(error){
+
+msg.textContent='Não consegui entrar. Confira e-mail e senha.';
+
+return;
+
+}
+
+await startApp();
+
+}
+
+
+async function startApp(){
+
+const {data:{session}}=
+await supabaseClient.auth.getSession();
+
+if(!session){
+
+document.getElementById('nav').style.display='none';
+
+login();
+
+return;
+
+}
+
+document.getElementById('nav').style.display='grid';
+
+await loadBookings();
+
+home();
+
+if(channel)
+await supabaseClient.removeChannel(channel);
+
+channel=
+supabaseClient
+.channel('kids-planet-bookings')
+.on(
+'postgres_changes',
+{
+event:'*',
+schema:'public',
+table:'bookings'
+},
+async()=>{
+
+await loadBookings();
+
+refreshCurrent();
+
+}
+)
+.subscribe();
+
+}
+
+
+async function loadBookings(){
+
+const {data,error}=await supabaseClient
+.from('bookings')
+.select('*')
+.order('booking_date',{ascending:true})
+.order('start_time',{ascending:true});
+
+if(error){
+
+app.innerHTML=`
+
+<div class="card">
+
+<b>Erro ao carregar os agendamentos.</b>
+
+<p class="muted">
+Confira se você executou o SQL do Kids Planet no Supabase.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+requests=data||[];
+
+}
+
+
+function refreshCurrent(){
+
+const active=
+document.querySelector('nav button.active');
+
+const idx=
+[...document.querySelectorAll('nav button')]
+.indexOf(active);
+
+['home','requests','agenda','payments','revenue']
+[idx<0?0:idx]();
+
+}
+
+
+function page(p,btn){
+
+document
+.querySelectorAll('nav button')
+.forEach(b=>b.classList.remove('active'));
+
+if(btn)
+btn.classList.add('active');
+
+if(p==='home')home();
+
+if(p==='requests')requestsPage();
+
+if(p==='agenda')agenda();
+
+if(p==='payments')payments();
+
+if(p==='revenue')revenue();
+
+}
+
+
+function home(){
+
+let c=
+requests.filter(
+x=>x.booking_status==='Confirmado'
+);
+
+let p=
+requests.filter(
+x=>x.booking_status==='Em negociação'
+);
+
+app.innerHTML=`
+
+<div class="hello">
+
+<h2>Olá! 👋</h2>
+
+<p>
+Aqui está o resumo da Kids Planet.
+</p>
+
+</div>
+
+
+<div class="stats">
+
+<div class="stat">
+
+<div class="n">${p.length}</div>
+
+<small>Pedidos aguardando</small>
+
+</div>
+
+
+<div class="stat">
+
+<div class="n">${c.length}</div>
+
+<small>Agendamentos confirmados</small>
+
+</div>
+
+
+<div class="stat">
+
+<div class="n">
+R$ ${c.reduce(
+(a,x)=>a+Number(x.amount||0),0
+).toFixed(2).replace('.',',')}
+</div>
+
+<small>Valores confirmados</small>
+
+</div>
+
+
+<div class="stat">
+
+<div class="n">
+${new Set(c.map(x=>x.booking_date)).size}
+</div>
+
+<small>Dias de trabalho</small>
+
+</div>
+
+</div>
+
+
+<div class="quick">
+
+<button onclick="requestsPage()">
+📋<br>Ver pedidos
+</button>
+
+<button onclick="agenda()">
+📅<br>Minha agenda
+</button>
+
+<button onclick="payments()">
+💳<br>Pagamentos
+</button>
+
+<button onclick="revenue()">
+📈<br>Faturamento
+</button>
+
+<button onclick="requestsPage()">
+🔔<br>Notificações
+</button>
+
+</div>
+
+
+<div class="card">
+
+<div class="section-title">
+🔔 O que precisa da sua atenção
+</div>
+
+<p class="muted">
+
+${
