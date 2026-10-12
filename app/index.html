@@ -15,17 +15,24 @@ body{margin:0;background:linear-gradient(145deg,#fff5df,#effff5 50%,#f1edff);col
 header{background:linear-gradient(135deg,#ff7a45,#ff4f81 48%,#7448e8);color:white;padding:20px 16px;position:sticky;top:0;z-index:5;box-shadow:0 6px 20px #7448e844}
 .brand{font-size:26px;font-weight:900}
 .sub{font-size:13px;margin-top:4px}
-#installBtn{display:none;margin-top:12px;padding:11px 14px;border:0;border-radius:12px;font-weight:bold}
-nav{display:none;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;padding:8px;background:white;position:sticky;top:80px;z-index:4}
-nav button{border:0;border-radius:12px;padding:11px 2px;background:#eeeaf7;color:#594b72;font-weight:bold;font-size:10px}
+.header-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:12px}
+#installBtn{display:none;padding:11px 14px;border:0;border-radius:12px;font-weight:bold}
+#logoutBtn{display:none;padding:11px 14px;border:1px solid #ffffff80;border-radius:12px;background:#ffffff20;color:white;font-weight:bold}
+nav{display:none;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;padding:10px 8px;background:white;position:sticky;top:0;z-index:4;box-shadow:0 4px 14px #593b7810}
+nav button{border:0;border-radius:12px;padding:13px 4px;background:#eeeaf7;color:#594b72;font-weight:bold;font-size:12px}
 nav button.active{background:linear-gradient(135deg,#7448e8,#ff4f81);color:white}
-main{max-width:850px;margin:auto;padding:14px}
-.card,.stat{background:white;border:1px solid #ebe6ef;border-radius:18px;padding:16px;margin-bottom:13px;box-shadow:0 5px 18px #593b7810}
-.title{font-size:17px;font-weight:900}
-.muted,.small{color:#68736d;font-size:13px;line-height:1.5}
-.stats,.revenue-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.stat{margin:0}
-.stat-number{font-size:25px;font-weight:900;margin:6px 0}
+main{width:100%;max-width:1100px;min-height:calc(100dvh - 300px);margin:auto;padding:20px;display:flex;flex-direction:column}
+#app{width:100%}
+#app.home-layout{flex:1;display:flex;flex-direction:column;gap:16px}
+#app.home-layout>.card:last-child{flex:1;min-height:180px}
+.card,.stat{background:white;border:1px solid #ebe6ef;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 5px 18px #593b7810}
+#app.home-layout>.card,#app.home-layout>.stats>.stat{margin-bottom:0}
+.title{font-size:19px;font-weight:900}
+.muted,.small{color:#68736d;font-size:14px;line-height:1.6}
+.stats,.revenue-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.stats{flex:1;align-content:stretch}
+.stat{margin:0;min-height:118px;display:flex;flex-direction:column;justify-content:center}
+.stat-number{font-size:29px;font-weight:900;margin:8px 0}
 .buttons{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
 .btn{border:0;border-radius:11px;padding:11px 12px;font-weight:bold;background:#eeeaf7;color:#4d3d70}
 .primary{background:linear-gradient(135deg,#7448e8,#ff4f81);color:white}
@@ -43,8 +50,22 @@ input,select{display:block;width:100%;padding:13px;margin:9px 0;border:1px solid
 .calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-top:12px}
 .day{background:white;border:1px solid #e8e3ea;border-radius:8px;text-align:center;padding:9px 0;font-size:12px;min-height:36px}
 .busy{background:#ffe0c7;border:2px solid #ff7a45}
-.empty{text-align:center;padding:30px 10px;color:#68736d}
-@media(max-width:380px){nav button{font-size:9px}.brand{font-size:23px}.stat-number{font-size:21px}}
+.empty{text-align:center;padding:42px 10px;color:#68736d}
+@media(max-width:520px){
+  main{padding:16px 14px;min-height:calc(100dvh - 285px)}
+  header{padding:20px 16px}
+  nav{gap:5px;padding:8px 6px}
+  nav button{font-size:10px;padding:13px 2px}
+  .card,.stat{padding:18px;border-radius:19px}
+  .stats,.revenue-grid{gap:12px}
+  .stat{min-height:122px}
+}
+@media(max-width:380px){
+  nav button{font-size:9px}
+  .brand{font-size:23px}
+  .stat-number{font-size:22px}
+  .header-actions button{font-size:12px}
+}
 </style>
 </head>
 
@@ -52,7 +73,10 @@ input,select{display:block;width:100%;padding:13px;margin:9px 0;border:1px solid
 <header>
   <div class="brand">🌱 Kids Planet</div>
   <div class="sub">Painel de administração</div>
-  <button id="installBtn">📲 Instalar na tela inicial</button>
+  <div class="header-actions">
+    <button id="installBtn">📲 Instalar na tela inicial</button>
+    <button id="logoutBtn" type="button">🚪 Sair</button>
+  </div>
 </header>
 
 <nav id="nav">
@@ -77,6 +101,7 @@ input,select{display:block;width:100%;padding:13px;margin:9px 0;border:1px solid
 const app = document.getElementById('app');
 const nav = document.getElementById('nav');
 const installBtn = document.getElementById('installBtn');
+const logoutBtn = document.getElementById('logoutBtn');
 
 const SUPABASE_URL = 'https://encydksbesxporsmmott.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_CpwWhxFfSQBcGM6eiSeAww_LlmLa0eB';
@@ -85,7 +110,6 @@ let db = null;
 let bookings = [];
 let currentPage = 'home';
 let channel = null;
-let deferredPrompt = null;
 
 const money = value =>
   Number(value || 0).toLocaleString('pt-BR',{
@@ -111,6 +135,9 @@ function timeBR(value) {
 }
 
 function showError(message) {
+  nav.style.display = 'none';
+  logoutBtn.style.display = 'none';
+  app.classList.remove('home-layout');
   app.innerHTML = `
     <div class="card">
       <div class="title">⚠️ Não foi possível continuar</div>
@@ -121,6 +148,9 @@ function showError(message) {
 
 function showLogin(message='') {
   nav.style.display = 'none';
+  logoutBtn.style.display = 'none';
+  app.classList.remove('home-layout');
+
   app.innerHTML = `
     <div class="login card">
       <div class="title">🔐 Entrar no painel</div>
@@ -150,8 +180,10 @@ function showLogin(message='') {
         msg.textContent = 'Não foi possível entrar. Confira e-mail e senha.';
         return;
       }
+
       await startApp();
-    } catch {
+    } catch(error) {
+      console.error(error);
       msg.textContent = 'Falha na conexão. Tente novamente.';
     }
   });
@@ -210,13 +242,15 @@ async function updateBooking(id, values) {
     if (error) throw error;
     await loadBookings();
     setPage(currentPage);
-  } catch (error) {
+  } catch(error) {
     alert('Não consegui salvar a alteração. Confira as permissões do Supabase.');
     console.error(error);
   }
 }
 
 function renderHome() {
+  app.classList.add('home-layout');
+
   const pending = bookings.filter(b => b.booking_status === 'Em negociação');
   const confirmed = bookings.filter(b => b.booking_status === 'Confirmado');
   const total = confirmed.reduce((sum,b) => sum + Number(b.amount || 0),0);
@@ -242,8 +276,14 @@ function renderHome() {
 }
 
 function renderRequests() {
+  app.classList.remove('home-layout');
   const list = bookings.filter(b => b.booking_status === 'Em negociação');
-  app.innerHTML = `<div class="card"><div class="title">📋 Agendamentos</div><p class="muted">Analise os pedidos antes de confirmar.</p></div>` +
+
+  app.innerHTML = `
+    <div class="card">
+      <div class="title">📋 Agendamentos</div>
+      <p class="muted">Analise os pedidos antes de confirmar.</p>
+    </div>` +
   (list.length ? list.map(b=>`
     <div class="card">
       <div class="title">${escapeHTML(b.service)}</div>
@@ -266,10 +306,13 @@ function renderRequests() {
         ${button('❌ Recusar','reject:'+b.id,'btn danger')}
       </div>
     </div>`).join('') : '<div class="empty">Nenhum pedido aguardando decisão.</div>');
+
   wireActions();
 }
 
 function renderAgenda() {
+  app.classList.remove('home-layout');
+
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth();
@@ -306,8 +349,12 @@ function renderAgenda() {
 }
 
 function renderPayments() {
+  app.classList.remove('home-layout');
   const list = bookings.filter(b=>b.booking_status==='Confirmado');
-  app.innerHTML = `<div class="card"><div class="title">💳 Pagamentos</div><p class="muted">Forma de pagamento dos agendamentos confirmados.</p></div>` +
+
+  app.innerHTML = `
+    <div class="card"><div class="title">💳 Pagamentos</div>
+    <p class="muted">Forma de pagamento dos agendamentos confirmados.</p></div>` +
   (list.length?list.map(b=>`
     <div class="card">
       <div class="title">${escapeHTML(b.responsible_name)} — ${escapeHTML(b.child_name)}</div>
@@ -319,6 +366,8 @@ function renderPayments() {
 }
 
 function renderRevenue() {
+  app.classList.remove('home-layout');
+
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
@@ -376,6 +425,7 @@ async function startApp() {
       return;
     }
 
+    logoutBtn.style.display = 'inline-block';
     nav.style.display = 'grid';
     await loadBookings();
     setPage('home');
@@ -439,29 +489,26 @@ window.addEventListener('beforeinstallprompt',event=>{
   installBtn.style.display = 'inline-block';
 });
 
-installBtn.addEventListener('click',async()=>{
-  if(!installButtonPrompt) return;
-  installButtonPrompt.prompt();
-  await installButtonPrompt.userChoice;
-  installButtonPrompt = null;
-  installBtn.style.display = 'none';
-});
+logoutBtn.addEventListener('click',async()=>{
+  logoutBtn.disabled = true;
+  logoutBtn.textContent = 'Saindo...';
 
-window.addEventListener('appinstalled',()=>{
-  installBtn.style.display = 'none';
-});
+  try {
+    const {error} = await db.auth.signOut({scope:'local'});
+    if(error) throw error;
 
-if('serviceWorker' in navigator) {
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js').catch(error=>{
-      console.warn('Service worker não registrado:',error);
-    });
-  });
-}
+    if(channel) {
+      await db.removeChannel(channel);
+      channel = null;
+    }
 
-loadSupabase();
-
-})();
-</script>
-</body>
-</html>
+    bookings = [];
+    nav.style.display = 'none';
+    logoutBtn.style.display = 'none';
+    logoutBtn.disabled = false;
+    logoutBtn.textContent = '🚪 Sair';
+    showLogin('Você saiu da sua conta.');
+  } catch(error) {
+    console.error('Falha ao sair:',error);
+    logoutBtn.disabled = false;
+    logoutBtn.textCont
