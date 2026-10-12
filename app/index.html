@@ -4,83 +4,67 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#7448e8">
-<meta name="description" content="Painel administrativo Kids Planet">
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="apple-touch-icon" href="./icon-192.png">
 <title>Kids Planet • Administração</title>
-
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:linear-gradient(145deg,#fff5df,#effff5 50%,#f1edff);color:#17221c;font-family:Arial,sans-serif}
-header{background:linear-gradient(135deg,#ff7a45,#ff4f81 48%,#7448e8);color:white;padding:20px 16px;position:sticky;top:0;z-index:5;box-shadow:0 6px 20px #7448e844}
-.brand{font-size:26px;font-weight:900}
-.sub{font-size:13px;margin-top:4px}
-.header-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:12px}
-#installBtn{display:none;padding:11px 14px;border:0;border-radius:12px;font-weight:bold}
-#logoutBtn{display:none;padding:11px 14px;border:1px solid #ffffff80;border-radius:12px;background:#ffffff20;color:white;font-weight:bold}
-nav{display:none;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;padding:10px 8px;background:white;position:sticky;top:0;z-index:4;box-shadow:0 4px 14px #593b7810}
-nav button{border:0;border-radius:12px;padding:13px 4px;background:#eeeaf7;color:#594b72;font-weight:bold;font-size:12px}
+header{background:linear-gradient(135deg,#ff7a45,#ff4f81 48%,#7448e8);color:white;padding:20px 16px;box-shadow:0 6px 20px #7448e844}
+.brand{font-size:27px;font-weight:900}
+.sub{font-size:13px;margin-top:5px}
+.header-actions{display:flex;gap:9px;margin-top:13px;flex-wrap:wrap}
+button{cursor:pointer}
+#logoutBtn{display:none;background:#ffffff22;color:white;border:1px solid #ffffff80}
+.header-actions button{padding:11px 14px;border-radius:12px;font-weight:bold}
+nav{display:none;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;padding:10px;background:white;position:sticky;top:0;z-index:4;box-shadow:0 4px 14px #593b7810}
+nav button{border:0;border-radius:11px;padding:13px 3px;background:#eeeaf7;color:#594b72;font-weight:bold;font-size:12px}
 nav button.active{background:linear-gradient(135deg,#7448e8,#ff4f81);color:white}
-main{width:100%;max-width:1100px;min-height:calc(100dvh - 300px);margin:auto;padding:20px;display:flex;flex-direction:column}
-#app{width:100%}
-#app.home-layout{flex:1;display:flex;flex-direction:column;gap:16px}
-#app.home-layout>.card:last-child{flex:1;min-height:180px}
-.card,.stat{background:white;border:1px solid #ebe6ef;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 5px 18px #593b7810}
-#app.home-layout>.card,#app.home-layout>.stats>.stat{margin-bottom:0}
+main{width:100%;max-width:1100px;margin:auto;padding:18px;min-height:65vh}
+.card,.stat{background:white;border:1px solid #ebe6ef;border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 5px 18px #593b7810}
 .title{font-size:19px;font-weight:900}
 .muted,.small{color:#68736d;font-size:14px;line-height:1.6}
-.stats,.revenue-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.stats{flex:1;align-content:stretch}
-.stat{margin:0;min-height:118px;display:flex;flex-direction:column;justify-content:center}
-.stat-number{font-size:29px;font-weight:900;margin:8px 0}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.stat{margin:0;min-height:110px}
+.stat-number{font-size:27px;font-weight:900;margin-top:9px}
 .buttons{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
 .btn{border:0;border-radius:11px;padding:11px 12px;font-weight:bold;background:#eeeaf7;color:#4d3d70}
 .primary{background:linear-gradient(135deg,#7448e8,#ff4f81);color:white}
 .danger{background:#ffe0e8;color:#a11f42}
 .success{background:#d7f8df;color:#16733b}
-input,select{display:block;width:100%;padding:13px;margin:9px 0;border:1px solid #ddd;border-radius:11px;font-size:15px;background:white}
+input,select,textarea{display:block;width:100%;padding:13px;margin:9px 0;border:1px solid #ddd;border-radius:11px;font-size:15px;background:white}
 .login{max-width:430px;margin:35px auto}
 .login button{width:100%;padding:14px}
 .badge{display:inline-block;padding:6px 9px;border-radius:30px;background:#fff0b8;color:#805c00;font-size:11px;font-weight:bold}
-.chart{display:flex;align-items:flex-end;gap:8px;overflow-x:auto;height:225px;padding:15px 4px}
-.barbox{min-width:43px;height:195px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px}
-.bar{width:27px;min-height:3px;border-radius:7px 7px 2px 2px;background:linear-gradient(#7448e8,#ff4f81)}
-.bar.current{background:linear-gradient(#ff7a45,#ff4f81)}
-.barlabel,.barvalue{font-size:10px;font-weight:bold;color:#594b72;white-space:nowrap}
+.empty{text-align:center;padding:30px 10px;color:#68736d}
 .calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-top:12px}
 .day{background:white;border:1px solid #e8e3ea;border-radius:8px;text-align:center;padding:9px 0;font-size:12px;min-height:36px}
 .busy{background:#ffe0c7;border:2px solid #ff7a45}
-.empty{text-align:center;padding:42px 10px;color:#68736d}
+.chart{display:flex;align-items:flex-end;gap:8px;overflow-x:auto;height:220px;padding:15px 4px}
+.barbox{min-width:43px;height:190px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px}
+.bar{width:27px;min-height:3px;border-radius:7px 7px 2px 2px;background:linear-gradient(#7448e8,#ff4f81)}
+.bar.current{background:linear-gradient(#ff7a45,#ff4f81)}
+.barlabel,.barvalue{font-size:10px;font-weight:bold;color:#594b72;white-space:nowrap}
 @media(max-width:520px){
-  main{padding:16px 14px;min-height:calc(100dvh - 285px)}
-  header{padding:20px 16px}
-  nav{gap:5px;padding:8px 6px}
-  nav button{font-size:10px;padding:13px 2px}
-  .card,.stat{padding:18px;border-radius:19px}
-  .stats,.revenue-grid{gap:12px}
-  .stat{min-height:122px}
-}
-@media(max-width:380px){
-  nav button{font-size:9px}
-  .brand{font-size:23px}
-  .stat-number{font-size:22px}
-  .header-actions button{font-size:12px}
+ main{padding:13px}
+ header{padding:18px 14px}
+ nav{padding:7px 4px;gap:3px}
+ nav button{font-size:10px;padding:12px 1px}
+ .card,.stat{padding:15px;border-radius:15px}
+ .stat-number{font-size:24px}
+ .title{font-size:17px}
 }
 </style>
 </head>
-
 <body>
 <header>
-  <div class="brand">🌱 Kids Planet</div>
-  <div class="sub">Painel de administração</div>
+  <div class="brand">🌈 Kids Planet</div>
+  <div class="sub">Painel administrativo</div>
   <div class="header-actions">
-    <button id="installBtn">📲 Instalar na tela inicial</button>
-    <button id="logoutBtn" type="button">🚪 Sair</button>
+    <button id="logoutBtn">🚪 Sair</button>
   </div>
 </header>
 
 <nav id="nav">
-  <button class="active" data-page="home">🏠 Início</button>
+  <button data-page="home" class="active">🏠 Início</button>
   <button data-page="requests">📋 Pedidos</button>
   <button data-page="agenda">📅 Agenda</button>
   <button data-page="payments">💳 Pagamentos</button>
@@ -98,417 +82,350 @@ input,select{display:block;width:100%;padding:13px;margin:9px 0;border:1px solid
 (() => {
 'use strict';
 
-const app = document.getElementById('app');
-const nav = document.getElementById('nav');
-const installBtn = document.getElementById('installBtn');
-const logoutBtn = document.getElementById('logoutBtn');
-
 const SUPABASE_URL = 'https://encydksbesxporsmmott.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_CpwWhxFfSQBcGM6eiSeAww_LlmLa0eB';
+
+const app = document.getElementById('app');
+const nav = document.getElementById('nav');
+const logoutBtn = document.getElementById('logoutBtn');
 
 let db = null;
 let bookings = [];
 let currentPage = 'home';
+let selectedMonth = new Date().getMonth();
+let selectedYear = new Date().getFullYear();
 let channel = null;
 
-const money = value =>
-  Number(value || 0).toLocaleString('pt-BR',{
-    style:'currency',currency:'BRL'
-  });
+const money = value => Number(value || 0).toLocaleString('pt-BR',{
+  style:'currency',currency:'BRL'
+});
 
-const escapeHTML = value =>
-  String(value ?? '').replace(/[&<>"']/g, char => ({
-    '&':'&amp;','<':'&lt;','>':'&gt;',
-    '"':'&quot;',"'":'&#39;'
-  })[char]);
+const safe = value => String(value ?? '').replace(/[&<>"']/g,c=>({
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+})[c]);
 
-function dateBR(value) {
-  if (!value) return 'Sem data';
-  const parts = value.slice(0,10).split('-');
-  return parts.length === 3
-    ? `${parts[2]}/${parts[1]}/${parts[0]}`
-    : value;
-}
+const dateBR = value => {
+  if(!value) return 'Sem data';
+  const p = String(value).slice(0,10).split('-');
+  return p.length===3 ? `${p[2]}/${p[1]}/${p[0]}` : value;
+};
 
-function timeBR(value) {
-  return value ? String(value).slice(0,5) : 'Sem horário';
-}
+const timeBR = value => value ? String(value).slice(0,5) : 'Sem horário';
 
 function showError(message) {
-  nav.style.display = 'none';
-  logoutBtn.style.display = 'none';
-  app.classList.remove('home-layout');
-  app.innerHTML = `
-    <div class="card">
-      <div class="title">⚠️ Não foi possível continuar</div>
-      <p class="muted">${escapeHTML(message)}</p>
-      <button class="btn primary" onclick="location.reload()">🔄 Tentar novamente</button>
-    </div>`;
+  nav.style.display='none';
+  logoutBtn.style.display='none';
+  app.innerHTML=`<div class="card">
+    <div class="title">⚠️ Não foi possível continuar</div>
+    <p class="muted">${safe(message)}</p>
+    <button class="btn primary" onclick="location.reload()">🔄 Tentar novamente</button>
+  </div>`;
 }
 
 function showLogin(message='') {
-  nav.style.display = 'none';
-  logoutBtn.style.display = 'none';
-  app.classList.remove('home-layout');
+  nav.style.display='none';
+  logoutBtn.style.display='none';
+  app.innerHTML=`<div class="login card">
+    <div class="title">🔐 Entrar no painel</div>
+    <p class="muted">Entre com o e-mail e a senha cadastrados no Supabase.</p>
+    <form id="loginForm">
+      <input id="loginEmail" type="email" autocomplete="username" placeholder="E-mail do administrador" required>
+      <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Senha" required>
+      <button class="btn primary" type="submit">Entrar</button>
+    </form>
+    <p id="loginMessage" class="small">${safe(message)}</p>
+  </div>`;
 
-  app.innerHTML = `
-    <div class="login card">
-      <div class="title">🔐 Entrar no painel</div>
-      <p class="muted">Use o e-mail e a senha do administrador cadastrados no Supabase.</p>
-      <form id="loginForm">
-        <input id="loginEmail" type="email" autocomplete="username"
-          placeholder="Seu e-mail" required>
-        <input id="loginPassword" type="password"
-          autocomplete="current-password" placeholder="Sua senha" required>
-        <button class="btn primary" type="submit">Entrar</button>
-      </form>
-      <p id="loginMessage" class="small">${escapeHTML(message)}</p>
-    </div>`;
-
-  document.getElementById('loginForm').addEventListener('submit', async event => {
-    event.preventDefault();
-    const msg = document.getElementById('loginMessage');
-    msg.textContent = 'Verificando acesso...';
-
+  document.getElementById('loginForm').addEventListener('submit',async e=>{
+    e.preventDefault();
+    const msg=document.getElementById('loginMessage');
+    msg.textContent='Verificando acesso...';
     try {
-      const {error} = await db.auth.signInWithPassword({
-        email: document.getElementById('loginEmail').value.trim(),
-        password: document.getElementById('loginPassword').value
+      const {error}=await db.auth.signInWithPassword({
+        email:document.getElementById('loginEmail').value.trim(),
+        password:document.getElementById('loginPassword').value
       });
-
-      if (error) {
-        msg.textContent = 'Não foi possível entrar. Confira e-mail e senha.';
+      if(error) {
+        msg.textContent='Não foi possível entrar. Confira o e-mail e a senha.';
         return;
       }
-
       await startApp();
-    } catch(error) {
-      console.error(error);
-      msg.textContent = 'Falha na conexão. Tente novamente.';
+    } catch(err) {
+      console.error(err);
+      msg.textContent='Falha na conexão. Tente novamente.';
     }
   });
 }
 
-function setActive(page) {
-  currentPage = page;
-  nav.querySelectorAll('button').forEach(button => {
-    button.classList.toggle('active',button.dataset.page === page);
-  });
+async function loadBookings() {
+  const {data,error}=await db.from('bookings').select('*').order('created_at',{ascending:false});
+  if(error) throw error;
+  bookings=data || [];
 }
 
-function button(text, action, style='btn') {
-  return `<button class="${style}" data-action="${action}">${text}</button>`;
-}
-
-function wireActions() {
-  app.querySelectorAll('[data-action]').forEach(element => {
-    element.addEventListener('click', async () => {
-      const [action,id] = element.dataset.action.split(':');
-      if (action === 'confirm') await updateBooking(id,{booking_status:'Confirmado'});
-      if (action === 'reject') await updateBooking(id,{booking_status:'Recusado'});
-      if (action === 'pix') await updateBooking(id,{payment_method:'Pago via Pix',payment_status:'Pago via Pix'});
-      if (action === 'inperson') await updateBooking(id,{payment_method:'Pagamento presencial',payment_status:'Pagamento presencial'});
-      if (action === 'undefined') await updateBooking(id,{payment_method:'A definir',payment_status:'A definir'});
-    });
-  });
+async function updateBooking(id, changes) {
+  const {error}=await db.from('bookings').update(changes).eq('id',id);
+  if(error) {
+    alert('Não foi possível atualizar: '+error.message);
+    return;
+  }
+  await loadBookings();
+  renderPage(currentPage);
 }
 
 function setPage(page) {
-  setActive(page);
-  if (page === 'home') renderHome();
-  if (page === 'requests') renderRequests();
-  if (page === 'agenda') renderAgenda();
-  if (page === 'payments') renderPayments();
-  if (page === 'revenue') renderRevenue();
+  currentPage=page;
+  nav.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+  renderPage(page);
 }
 
-nav.querySelectorAll('button').forEach(button => {
-  button.addEventListener('click',() => setPage(button.dataset.page));
-});
-
-async function loadBookings() {
-  const {data,error} = await db.from('bookings')
-    .select('*')
-    .order('booking_date',{ascending:true})
-    .order('start_time',{ascending:true});
-
-  if (error) throw error;
-  bookings = data || [];
-}
-
-async function updateBooking(id, values) {
-  try {
-    const {error} = await db.from('bookings').update(values).eq('id',id);
-    if (error) throw error;
-    await loadBookings();
-    setPage(currentPage);
-  } catch(error) {
-    alert('Não consegui salvar a alteração. Confira as permissões do Supabase.');
-    console.error(error);
-  }
+function bookingCard(b, mode='requests') {
+  const status=String(b.booking_status || 'Pendente');
+  const payment=String(b.payment_status || 'Pendente');
+  const paid=['pago','paga','paid','confirmado','confirmada'].includes(payment.toLowerCase());
+  return `<div class="card">
+    <div class="title">${safe(b.responsible_name || 'Responsável')} — ${safe(b.child_name || 'Criança')}</div>
+    <p class="muted">${safe(b.service || 'Serviço')} · ${dateBR(b.booking_date)}</p>
+    <p>🕒 ${timeBR(b.start_time)}${b.end_time?' – '+timeBR(b.end_time):''}</p>
+    <p>📞 ${safe(b.phone || 'Sem telefone')}</p>
+    <p>💰 ${money(b.amount)} · ${safe(b.payment_method || 'Pagamento não informado')}</p>
+    <p><span class="badge">Pedido: ${safe(status)}</span> <span class="badge">Pagamento: ${safe(payment)}</span></p>
+    ${b.notes?`<p class="muted">Observações: ${safe(b.notes)}</p>`:''}
+    <div class="buttons">
+      ${status.toLowerCase()!=='confirmado'?`<button class="btn success" data-action="confirm" data-id="${safe(b.id)}">✅ Confirmar</button>`:''}
+      <button class="btn danger" data-action="reject" data-id="${safe(b.id)}">✖ Recusar</button>
+      <button class="btn ${paid?'':'primary'}" data-action="payment" data-id="${safe(b.id)}">${paid?'↩ Marcar pendente':'💵 Marcar pago'}</button>
+    </div>
+  </div>`;
 }
 
 function renderHome() {
-  app.classList.add('home-layout');
-
-  const pending = bookings.filter(b => b.booking_status === 'Em negociação');
-  const confirmed = bookings.filter(b => b.booking_status === 'Confirmado');
-  const total = confirmed.reduce((sum,b) => sum + Number(b.amount || 0),0);
-
-  app.innerHTML = `
-    <div class="card">
-      <div class="title">Olá! 👋</div>
-      <p class="muted">Resumo da Kids Planet.</p>
-    </div>
+  const pending=bookings.filter(b=>!['confirmado','recusado','cancelado'].includes(String(b.booking_status||'').toLowerCase())).length;
+  const today=new Date().toISOString().slice(0,10);
+  const todayCount=bookings.filter(b=>b.booking_date===today && String(b.booking_status).toLowerCase()!=='recusado').length;
+  const paid=bookings.filter(b=>['pago','paga','paid','confirmado','confirmada'].includes(String(b.payment_status||'').toLowerCase())).reduce((s,b)=>s+Number(b.amount||0),0);
+  app.innerHTML=`
+    <div class="card"><div class="title">🌟 Visão geral</div><p class="muted">Resumo dos agendamentos do Kids Planet.</p></div>
     <div class="stats">
-      <div class="stat"><div class="stat-number">${pending.length}</div><div class="muted">Pedidos aguardando</div></div>
-      <div class="stat"><div class="stat-number">${confirmed.length}</div><div class="muted">Confirmados</div></div>
-      <div class="stat"><div class="stat-number">${money(total)}</div><div class="muted">Valores confirmados</div></div>
-      <div class="stat"><div class="stat-number">${new Set(confirmed.map(b=>b.booking_date).filter(Boolean)).size}</div><div class="muted">Dias de trabalho</div></div>
+      <div class="stat"><div class="muted">📋 Pedidos</div><div class="stat-number">${bookings.length}</div></div>
+      <div class="stat"><div class="muted">⏳ Aguardando</div><div class="stat-number">${pending}</div></div>
+      <div class="stat"><div class="muted">📅 Hoje</div><div class="stat-number">${todayCount}</div></div>
+      <div class="stat"><div class="muted">💰 Pagamentos registrados</div><div class="stat-number">${money(paid)}</div></div>
     </div>
-    <div class="card">
-      <div class="title">🔔 Pedidos recentes</div>
-      ${pending.length ? pending.slice(0,5).map(b=>`
-        <p><b>${escapeHTML(b.responsible_name || 'Responsável')}</b><br>
-        <span class="muted">${escapeHTML(b.service)} • ${dateBR(b.booking_date)}</span></p>
-      `).join('') : '<div class="empty">Nenhum pedido aguardando.</div>'}
+    <div class="card"><div class="title">🆕 Pedidos recentes</div>
+      ${bookings.length?bookings.slice(0,4).map(b=>bookingCard(b,'home')).join(''):'<div class="empty">Nenhum pedido encontrado.</div>'}
+      <button class="btn primary" data-page="requests">Ver todos os pedidos</button>
     </div>`;
 }
 
 function renderRequests() {
-  app.classList.remove('home-layout');
-  const list = bookings.filter(b => b.booking_status === 'Em negociação');
-
-  app.innerHTML = `
-    <div class="card">
-      <div class="title">📋 Agendamentos</div>
-      <p class="muted">Analise os pedidos antes de confirmar.</p>
-    </div>` +
-  (list.length ? list.map(b=>`
-    <div class="card">
-      <div class="title">${escapeHTML(b.service)}</div>
-      <p class="muted">
-        👤 ${escapeHTML(b.responsible_name)}<br>
-        👶 ${escapeHTML(b.child_name)} — ${escapeHTML(b.child_age || 'Idade não informada')}<br>
-        📞 ${escapeHTML(b.phone)}<br>
-        📅 ${dateBR(b.booking_date)} • ${timeBR(b.start_time)}<br>
-        📍 ${escapeHTML(b.location || 'Local não informado')}<br>
-        💰 ${money(b.amount)}
-      </p>
-      <p>Pagamento: <b>${escapeHTML(b.payment_method || 'A definir')}</b></p>
-      <div class="buttons">
-        ${button('💠 Pix','pix:'+b.id)}
-        ${button('💵 Presencial','inperson:'+b.id)}
-        ${button('❔ A definir','undefined:'+b.id)}
-      </div>
-      <div class="buttons">
-        ${button('✅ Confirmar','confirm:'+b.id,'btn success')}
-        ${button('❌ Recusar','reject:'+b.id,'btn danger')}
-      </div>
-    </div>`).join('') : '<div class="empty">Nenhum pedido aguardando decisão.</div>');
-
-  wireActions();
+  app.innerHTML=`<div class="card"><div class="title">📋 Pedidos recebidos</div>
+    <p class="muted">Confirme ou recuse os pedidos abaixo.</p></div>
+    ${bookings.length?bookings.map(b=>bookingCard(b)).join(''):'<div class="card empty">Nenhum pedido encontrado.</div>'}`;
 }
 
 function renderAgenda() {
-  app.classList.remove('home-layout');
-
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth();
-  const monthName = today.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
-  const confirmed = bookings.filter(b=>b.booking_status==='Confirmado');
-  const firstDay = new Date(year,month,1).getDay();
-  const days = new Date(year,month+1,0).getDate();
-  let cells = '';
-
-  for(let i=0;i<firstDay;i++) cells += '<div></div>';
-
-  for(let d=1;d<=days;d++){
-    const date = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const count = confirmed.filter(b=>b.booking_date===date).length;
-    cells += `<div class="day ${count?'busy':''}"><b>${d}</b>${count?`<div>${count} 📌</div>`:''}</div>`;
+  const first=new Date(selectedYear,selectedMonth,1);
+  const count=new Date(selectedYear,selectedMonth+1,0).getDate();
+  const offset=first.getDay();
+  const names=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  let days=names.map(n=>`<div class="day"><b>${n}</b></div>`).join('');
+  for(let i=0;i<offset;i++) days+='<div class="day" style="visibility:hidden"></div>';
+  for(let d=1;d<=count;d++) {
+    const key=`${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const items=bookings.filter(b=>b.booking_date===key && String(b.booking_status).toLowerCase()!=='recusado');
+    days+=`<div class="day ${items.length?'busy':''}"><b>${d}</b>${items.length?`<br>📌 ${items.length}`:''}</div>`;
   }
-
-  app.innerHTML = `
-    <div class="card">
-      <div class="title">📅 Minha agenda</div>
-      <p class="muted">${escapeHTML(monthName)}</p>
-      <div class="calendar">
-        ${['D','S','T','Q','Q','S','S'].map(d=>`<div class="day"><b>${d}</b></div>`).join('')}
-        ${cells}
-      </div>
+  const monthName=first.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+  const list=bookings.filter(b=>String(b.booking_date||'').startsWith(`${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}`));
+  app.innerHTML=`<div class="card">
+    <div class="title">📅 Agenda</div>
+    <div class="buttons">
+      <button class="btn" data-action="prev-month">◀ Anterior</button>
+      <button class="btn" data-action="next-month">Próximo ▶</button>
     </div>
-    <div class="card"><div class="title">Agendamentos confirmados</div>
-      ${confirmed.length?confirmed.map(b=>`
-        <p><b>${dateBR(b.booking_date)} • ${timeBR(b.start_time)}</b><br>
-        ${escapeHTML(b.responsible_name)} — ${escapeHTML(b.child_name)}<br>
-        <span class="muted">${escapeHTML(b.service)} • ${money(b.amount)}</span></p>
-      `).join(''):'<div class="empty">Nenhum agendamento confirmado.</div>'}
-    </div>`;
+    <h3>${safe(monthName)}</h3>
+    <div class="calendar">${days}</div>
+  </div>
+  <div class="card"><div class="title">Agendamentos do mês (${list.length})</div>
+    ${list.length?list.map(b=>bookingCard(b,'agenda')).join(''):'<div class="empty">Nenhum agendamento neste mês.</div>'}
+  </div>`;
 }
 
 function renderPayments() {
-  app.classList.remove('home-layout');
-  const list = bookings.filter(b=>b.booking_status==='Confirmado');
-
-  app.innerHTML = `
-    <div class="card"><div class="title">💳 Pagamentos</div>
-    <p class="muted">Forma de pagamento dos agendamentos confirmados.</p></div>` +
-  (list.length?list.map(b=>`
-    <div class="card">
-      <div class="title">${escapeHTML(b.responsible_name)} — ${escapeHTML(b.child_name)}</div>
-      <p class="muted">${dateBR(b.booking_date)} • ${escapeHTML(b.service)}</p>
-      <p><b>${money(b.amount)}</b></p>
-      <span class="badge">${escapeHTML(b.payment_method || 'A definir')}</span>
-      <p class="muted">Status: ${escapeHTML(b.payment_status || 'A definir')}</p>
-    </div>`).join(''):'<div class="empty">Nenhum agendamento confirmado.</div>');
+  const paid=bookings.filter(b=>['pago','paga','paid','confirmado','confirmada'].includes(String(b.payment_status||'').toLowerCase()));
+  const pending=bookings.filter(b=>!['pago','paga','paid','confirmado','confirmada'].includes(String(b.payment_status||'').toLowerCase()));
+  app.innerHTML=`<div class="card"><div class="title">💳 Pagamentos</div>
+    <p>Recebido: <b>${money(paid.reduce((s,b)=>s+Number(b.amount||0),0))}</b></p>
+    <p>Aguardando: <b>${money(pending.reduce((s,b)=>s+Number(b.amount||0),0))}</b></p>
+  </div>
+  <div class="card"><div class="title">⏳ Pagamentos pendentes (${pending.length})</div>
+    ${pending.length?pending.map(b=>bookingCard(b,'payments')).join(''):'<div class="empty">Nenhum pagamento pendente.</div>'}
+  </div>
+  <div class="card"><div class="title">✅ Pagamentos registrados (${paid.length})</div>
+    ${paid.length?paid.map(b=>bookingCard(b,'payments')).join(''):'<div class="empty">Nenhum pagamento registrado.</div>'}
+  </div>`;
 }
 
 function renderRevenue() {
-  app.classList.remove('home-layout');
-
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  const names = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  const longNames = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-  const totals = Array(12).fill(0);
-
-  bookings.filter(b=>b.booking_status==='Confirmado').forEach(b=>{
-    if(!b.booking_date) return;
-    const parts = b.booking_date.slice(0,10).split('-').map(Number);
-    if(parts[0]===year) totals[parts[1]-1] += Number(b.amount||0);
+  const yearBookings=bookings.filter(b=>String(b.booking_date||'').startsWith(String(selectedYear)));
+  const totals=Array(12).fill(0);
+  yearBookings.forEach(b=>{
+    const paid=['pago','paga','paid','confirmado','confirmada'].includes(String(b.payment_status||'').toLowerCase());
+    if(paid) {
+      const m=Number(String(b.booking_date).slice(5,7))-1;
+      if(m>=0&&m<12) totals[m]+=Number(b.amount||0);
+    }
   });
-
-  const monthly = totals[month];
-  const annual = totals.reduce((a,b)=>a+b,0);
-  const max = Math.max(...totals,1);
-  const previous = month>0 ? totals[month-1] : 0;
-  const comparison = previous>0
-    ? `Variação em relação ao mês anterior: ${((monthly-previous)/previous*100).toFixed(1).replace('.',',')}%.`
-    : 'Ainda não há faturamento no mês anterior para comparar.';
-
-  app.innerHTML = `
-    <div class="card"><div class="title">📈 Faturamento</div>
-      <p class="muted">Valores calculados com base nos agendamentos confirmados e suas datas.</p>
-    </div>
-    <div class="revenue-grid">
-      <div class="stat"><div class="muted">Faturamento de ${longNames[month]}</div><div class="stat-number">${money(monthly)}</div></div>
-      <div class="stat"><div class="muted">Total de ${year}</div><div class="stat-number">${money(annual)}</div></div>
-    </div>
-    <div class="card">
-      <div class="title">📊 Faturamento por mês</div>
-      <div class="chart">
-        ${totals.map((v,i)=>`
-          <div class="barbox">
-            <div class="barvalue">${v?money(v):''}</div>
-            <div class="bar ${i===month?'current':''}" style="height:${Math.max(3,v/max*145)}px"></div>
-            <div class="barlabel">${names[i]}</div>
-          </div>`).join('')}
-      </div>
-      <p class="muted">Laranja: mês atual. Roxo: demais meses.</p>
-    </div>
-    <div class="card"><div class="title">📌 Comparação mensal</div><p class="muted">${comparison}</p></div>
-    <div class="card"><div class="title">Como funciona</div>
-      <p class="muted">O valor mensal corresponde apenas às datas do mês atual. O total anual soma os doze meses do ano selecionado. Quando o calendário muda de mês ou ano, os totais são recalculados automaticamente com os registros existentes.</p>
-    </div>`;
+  const monthTotal=totals[selectedMonth];
+  const yearTotal=totals.reduce((s,v)=>s+v,0);
+  const max=Math.max(...totals,1);
+  const names=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const bars=totals.map((v,i)=>`<div class="barbox">
+    <div class="barvalue">${v?money(v):''}</div>
+    <div class="bar ${i===selectedMonth?'current':''}" style="height:${Math.max(3,v/max*140)}px"></div>
+    <div class="barlabel">${names[i]}</div>
+  </div>`).join('');
+  app.innerHTML=`<div class="card"><div class="title">📈 Faturamento</div>
+    <p class="muted">Considera os pedidos marcados como pagos.</p>
+    <label>Ano</label><select id="yearSelect">${[selectedYear-1,selectedYear,selectedYear+1].map(y=>`<option ${y===selectedYear?'selected':''}>${y}</option>`).join('')}</select>
+    <label>Mês</label><select id="monthSelect">${names.map((n,i)=>`<option value="${i}" ${i===selectedMonth?'selected':''}>${n}</option>`).join('')}</select>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="muted">Faturamento do mês</div><div class="stat-number">${money(monthTotal)}</div></div>
+    <div class="stat"><div class="muted">Faturamento anual</div><div class="stat-number">${money(yearTotal)}</div></div>
+  </div>
+  <div class="card"><div class="title">📊 Faturamento por mês — ${selectedYear}</div><div class="chart">${bars}</div></div>
+  <div class="card"><div class="title">ℹ️ Como funciona</div>
+    <p class="muted">O total mensal é calculado separadamente. O total anual soma os valores recebidos nos doze meses do ano escolhido. Os valores são recalculados a partir dos pedidos registrados.</p>
+  </div>`;
+  document.getElementById('yearSelect').addEventListener('change',e=>{selectedYear=Number(e.target.value);renderRevenue();});
+  document.getElementById('monthSelect').addEventListener('change',e=>{selectedMonth=Number(e.target.value);renderRevenue();});
 }
+
+function renderPage(page) {
+  if(page==='home') renderHome();
+  else if(page==='requests') renderRequests();
+  else if(page==='agenda') renderAgenda();
+  else if(page==='payments') renderPayments();
+  else if(page==='revenue') renderRevenue();
+}
+
+app.addEventListener('click',async e=>{
+  const pageButton=e.target.closest('[data-page]');
+  if(pageButton) {
+    setPage(pageButton.dataset.page);
+    return;
+  }
+  const btn=e.target.closest('[data-action]');
+  if(!btn) return;
+  const action=btn.dataset.action;
+  const id=btn.dataset.id;
+  try {
+    if(action==='confirm') await updateBooking(id,{booking_status:'Confirmado'});
+    if(action==='reject') {
+      if(confirm('Deseja recusar este pedido?')) await updateBooking(id,{booking_status:'Recusado'});
+    }
+    if(action==='payment') {
+      const b=bookings.find(x=>String(x.id)===String(id));
+      const paid=['pago','paga','paid','confirmado','confirmada'].includes(String(b?.payment_status||'').toLowerCase());
+      await updateBooking(id,{payment_status:paid?'Pendente':'Pago'});
+    }
+    if(action==='prev-month') {
+      selectedMonth--;
+      if(selectedMonth<0){selectedMonth=11;selectedYear--;}
+      renderAgenda();
+    }
+    if(action==='next-month') {
+      selectedMonth++;
+      if(selectedMonth>11){selectedMonth=0;selectedYear++;}
+      renderAgenda();
+    }
+  } catch(err) {
+    console.error(err);
+    alert('Ocorreu um erro. Confira a conexão com o banco.');
+  }
+});
 
 async function startApp() {
   try {
-    const {data,error} = await db.auth.getSession();
+    const {data,error}=await db.auth.getSession();
     if(error) throw error;
-
     if(!data.session) {
       showLogin();
       return;
     }
-
-    logoutBtn.style.display = 'inline-block';
-    nav.style.display = 'grid';
+    logoutBtn.style.display='inline-block';
+    nav.style.display='grid';
     await loadBookings();
     setPage('home');
-
     if(channel) await db.removeChannel(channel);
-    channel = db.channel('kids-planet-bookings')
-      .on('postgres_changes',{
-        event:'*',schema:'public',table:'bookings'
-      },async()=>{
+    channel=db.channel('kids-planet-bookings')
+      .on('postgres_changes',{event:'*',schema:'public',table:'bookings'},async()=>{
         try {
           await loadBookings();
-          setPage(currentPage);
-        } catch(error) {
-          console.error(error);
+          renderPage(currentPage);
+        } catch(err) {
+          console.error(err);
         }
       }).subscribe();
-
-  } catch(error) {
-    console.error(error);
-    showError('Não foi possível conectar ao Supabase. Verifique a conexão e as configurações do banco de dados.');
+  } catch(err) {
+    console.error(err);
+    showError('Não foi possível conectar ao Supabase. Verifique sua internet, a tabela bookings e as permissões do banco.');
   }
 }
 
 async function loadSupabase() {
-  const urls = [
+  const urls=[
     'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2',
     'https://unpkg.com/@supabase/supabase-js@2'
   ];
-
   for(const url of urls) {
     try {
       await new Promise((resolve,reject)=>{
-        const script = document.createElement('script');
-        script.src = url;
-        script.onload = resolve;
-        script.onerror = () => {
-          script.remove();
-          reject(new Error('Biblioteca indisponível'));
-        };
+        const script=document.createElement('script');
+        script.src=url;
+        script.onload=resolve;
+        script.onerror=()=>{script.remove();reject(new Error('Biblioteca indisponível'));};
         document.head.appendChild(script);
       });
-
-      if(window.supabase && window.supabase.createClient) {
-        db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+      if(window.supabase?.createClient) {
+        db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
         await startApp();
         return;
       }
-    } catch(error) {
-      console.warn('Falha ao carregar biblioteca:',url);
+    } catch(err) {
+      console.warn('Falha ao carregar biblioteca:',url,err);
     }
   }
-
-  showError('A biblioteca de conexão não carregou. Confira a internet e tente recarregar a página.');
+  showError('A biblioteca de conexão não carregou. Confira sua internet e tente novamente.');
 }
 
-let installButtonPrompt = null;
-
-window.addEventListener('beforeinstallprompt',event=>{
-  event.preventDefault();
-  installButtonPrompt = event;
-  installBtn.style.display = 'inline-block';
-});
-
 logoutBtn.addEventListener('click',async()=>{
-  logoutBtn.disabled = true;
-  logoutBtn.textContent = 'Saindo...';
-
+  logoutBtn.disabled=true;
+  logoutBtn.textContent='Saindo...';
   try {
-    const {error} = await db.auth.signOut({scope:'local'});
+    const {error}=await db.auth.signOut({scope:'local'});
     if(error) throw error;
-
     if(channel) {
       await db.removeChannel(channel);
-      channel = null;
+      channel=null;
     }
-
-    bookings = [];
-    nav.style.display = 'none';
-    logoutBtn.style.display = 'none';
-    logoutBtn.disabled = false;
-    logoutBtn.textContent = '🚪 Sair';
+    bookings=[];
+    nav.style.display='none';
+    logoutBtn.style.display='none';
     showLogin('Você saiu da sua conta.');
-  } catch(error) {
-    console.error('Falha ao sair:',error);
-    logoutBtn.disabled = false;
-    logoutBtn.textCont
+  } catch(err) {
+    console.error(err);
+    alert('Não foi possível sair. Tente novamente.');
+  } finally {
+    logoutBtn.disabled=false;
+    logoutBtn.textContent='🚪 Sair';
+  }
+});
+
+loadSupabase();
+})();
+</script>
+</body>
+</html>
